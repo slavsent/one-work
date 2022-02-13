@@ -18,7 +18,7 @@ for num in cube_num:
     if (sum_fig % 7) == 0:
         sum_num_7 += num
     if (sum_fig_17 % 7) == 0:
-        sum_num_7_17 += num
+        sum_num_7_17 += num + 17
 
 # print (cube_num)
 print('Сумма чисел, сумма цифр, которых делится на 7: ', sum_num_7)
