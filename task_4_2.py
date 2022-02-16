@@ -3,6 +3,11 @@ import datetime
 
 
 def currency_rates(currency):
+    '''
+    Функция возвращает курс валюты к рублю по наименованию валюты к примеру usd
+    :param currency: наименования курса валюты
+    :return: курс введенной вылюты к рублю на текущее число
+    '''
     response = requests.get('http://www.cbr.ru/scripts/XML_daily.asp')
     if response.status_code == 200:
         content_text = response.text
