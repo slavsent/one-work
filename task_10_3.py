@@ -25,11 +25,10 @@ class Cell:
         res_str = ''
         if self.x > self.row:
             cell_all = self.x
-            while cell_all > 0:
+            while cell_all >= self.row:
                 res_str += self.row * '*' + '\n'
                 cell_all -= self.row
-            if cell_all < 0:
-                res_str += abs(cell_all) * '*'
+            res_str += (self.x % self.row) * '*'
         else:
             res_str += self.x * '*'
         return res_str
