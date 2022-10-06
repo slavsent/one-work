@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Homework</title>
+</head>
+
+<body>
+  <!--
+Необязательное задание, но желательно сделать.
+
+Необходимо данное задание выполнить в es5 стиле и в es6 стиле.
+Необходимо создать функцию-конструктор/класс для поста в социальной сети.
+Названия: `PostES5` для es5 стиля и `PostES6` для es6 стиля.
+Пост должен хранить:
+1. Автора поста (имени достаточно).
+2. Текст поста.
+3. Дату и время последнего изменения поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Каждому экземпляру объекта должен быть доступен метод `edit`, который будет
+менять текст поста.
+
+---
+
+Необходимо создать функцию-конструктор/класс для закрепленного поста в
+социальной сети.
+Названия: `AttachedPostES5` для es5 стиля и `AttachedPostES6` для es6 стиля.
+Закрепленный пост должен наследоваться от обычного поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Закрепленный пост должен иметь свойство `highlighted`, в котором по умолчанию
+будет лежать значение false (это свойство будет обозначать, будет ли наш
+закрепленный пост подсвечен).
+У экземпляров объекта закрепленного поста должен быть метод с названием
+`makeTextHighlighted`, который сделает так, чтобы наш пост стал подсвеченным
+(будет менять свойство `highlighted`).
+
+---
+
+Подсказки:
+1. Задание сложное, советую делать по аналогии с примером на онлайн-занятии.
+2. Обратите внимание что пост хранит "дату и время последнего изменения
+поста", это значит что если пост кто-то изменит (например вызовет какой-то
+метод, который изменит что-то в посте), дата и время последнего изменения
+поста также должна измениться.
+3. Выполняйте все по порядку, не стоит пытаться сделать все сразу, иначе можно
+что-нибудь пропустить.
+4. Если непонятно условие - задайте вопрос.
+-->
+  <script>
+    "use strict";
+
+    function PostES5(authtorName, text) {
+      this.authtorName = authtorName;
+      this.text = text;
+      this.dataChange = new Date();
+    }
+
+    PostES5.prototype.edit = function (newText) {
+      this.text = newText;
+      this.dataChange = new Date();
+    };
+
+    const post1 = new PostES5('Петр', 'Привет мир!');
+    console.log(`автор ${post1.authtorName} текст: ${post1.text} время: ${post1.dataChange}`);
+    post1.edit('Всем доброе утро!');
+    console.log(`автор ${post1.authtorName} текст: ${post1.text} время: ${post1.dataChange}`);
+
+    function AttachedPostES5(authtorName, text) {
+      PostES5.call(this, authtorName, text);
+      //this.dataChange = new Date();
+      this.highlighted = false;
+    }
+
+    AttachedPostES5.prototype = Object.create(PostES5.prototype);
+    AttachedPostES5.prototype.constructor = AttachedPostES5;
+
+    AttachedPostES5.prototype.makeTextHighlighted = function () {
+      this.highlighted = true;
+      this.dataChange = new Date();
+    };
+
+    const post3 = new AttachedPostES5('Семен', 'Привет мир!');
+    console.log(`автор ${post3.authtorName} текст: ${post3.text} время: ${post3.dataChange} ${post3.highlighted}`);
+    post3.edit('Обновленный текст');
+    console.log(`автор ${post3.authtorName} текст: ${post3.text} время: ${post3.dataChange} ${post3.highlighted}`);
+    post3.makeTextHighlighted();
+    console.log(`автор ${post3.authtorName} текст: ${post3.text} время: ${post3.dataChange} ${post3.highlighted}`);
+
+
+    class PostES6 {
+      constructor(authtorName, text) {
+        this.authtorName = authtorName;
+        this.text = text;
+        this.dataChange = new Date();
+      }
+      edit(newText) {
+        this.text = newText;
+        this.dataChange = new Date();
+      }
+    }
+
+    const post2 = new PostES6('Иван', 'Привет мир!');
+    console.log(`автор ${post2.authtorName} текст: ${post2.text} время: ${post2.dataChange}`);
+    post2.edit('Новый текст');
+    console.log(`автор ${post2.authtorName} текст: ${post2.text} время: ${post2.dataChange}`);
+
+    class AttachedPostES6 extends PostES6 {
+      constructor(authtorName, text) {
+        super(authtorName, text);
+        this.highlighted = false;
+      }
+
+      makeTextHighlighted() {
+        this.highlighted = true;
+        this.dataChange = new Date();
+      }
+    }
+
+    const post4 = new AttachedPostES6('Саша', 'Привет мир!');
+    console.log(`автор ${post4.authtorName} текст: ${post4.text} время: ${post4.dataChange} ${post4.highlighted}`);
+    post4.edit('Что-то новенькое');
+    console.log(`автор ${post4.authtorName} текст: ${post4.text} время: ${post4.dataChange} ${post4.highlighted}`);
+    post4.makeTextHighlighted();
+    console.log(`автор ${post4.authtorName} текст: ${post4.text} время: ${post4.dataChange} ${post4.highlighted}`);
+
+
+
+
+  </script>
+</body>
+
+</html>
