@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <style>
+        .product {
+            width: 200px;
+            padding: 10px;
+            float: left;
+            margin-right: 30px;
+            box-shadow: 0 0 4px black;
+        }
+
+        .basketProd {
+            width: 200px;
+            padding: 10px;
+            float: left;
+            margin-right: 30px;
+            box-shadow: 0 0 4px black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="product">
+        <div class="productName">Ручка</div>
+        <img src="" alt="">
+        <button>Купить</button>
+    </div>
+    <div class="product">
+        <div class="productName">Карандаш</div>
+        <img src="" alt="">
+        <button>Купить</button>
+    </div>
+    <div class="product">
+        <div class="productName">Тетрадь</div>
+        <img src="" alt="">
+        <button>Купить</button>
+    </div>
+    <div class="basketProd">Корзина с товарами</div>
+    <script>
+        "use strict";
+
+
+        class Product {
+            constructor(name, price) {
+                this.name = name;
+                this.price = price;
+            }
+            make25Discount() {
+                this.price *= 0.75;
+            }
+        }
+
+        class BascketProduct extends Product {
+            basketProducts = [];
+            addProduct(newProduct, num) {
+                let elBool = false;
+                for (let namProd of this.basketProducts) {
+                    if (namProd.name === newProduct.name) {
+                        namProd.quantity += num;
+                        namProd.sum = namProd.quantity * namProd.price;
+                        elBool = true;
+                    }
+                }
+                if (!elBool) {
+                    this.basketProducts.push({
+                        name: newProduct.name,
+                        price: newProduct.price,
+                        quantity: num,
+                        sum: (newProduct.price * num),
+                    });
+                }
+
+            }
+            makeSumProducts() {
+                if (this.basketProducts.length > 0) {
+                    let sumProducts = 0;
+                    for (let el of this.basketProducts) {
+                        sumProducts += el.sum;
+                    }
+                    return `В корзине ${this.basketProducts.length} товаров на сумму ${sumProducts} рублей`;
+                } else {
+                    return 'Корзина пуста';
+                }
+            }
+        }
+
+        let products = [];
+        products[0] = new Product('Карандаш', 10);
+        products[1] = new Product('Ручка', 50);
+        products[2] = new Product('Тетрадь', 100);
+        const myBasket = new BascketProduct();
+        myBasket.addProduct(products[0], 5);
+        myBasket.addProduct(products[1], 10);
+        console.log(myBasket.basketProducts);
+        console.log(myBasket.makeSumProducts());
+
+        const makeBasket = function () {
+            let prodBasket;
+            if (myBasket.basketProducts.length > 0) {
+                classBasket.innerHTML = 'Корзина с товарами';
+                for (let i = 0; i < myBasket.basketProducts.length; i++) {
+                    prodBasket = document.createElement('li');
+                    prodBasket.innerHTML = `Товар ${myBasket.basketProducts[i].name} 
+                    количество ${myBasket.basketProducts[i].quantity} 
+                    стоимость ${myBasket.basketProducts[i].sum}`;
+
+                    classBasket.appendChild(prodBasket);
+                }
+                prodBasket = document.createElement('div');
+                prodBasket.innerHTML = myBasket.makeSumProducts();
+                classBasket.appendChild(prodBasket);
+            } else {
+                prodBasket = document.createElement('div');
+                prodBasket.innerHTML = myBasket.makeSumProducts();
+                classBasket.appendChild(prodBasket);
+                l
+            }
+        }
+
+        const classBasket = document.querySelector('.basketProd');
+        classBasket.addEventListener('click', () => makeBasket());
+
+        const prodEl = document.querySelectorAll('.product');
+        prodEl.forEach(product => {
+            product.querySelector('button').addEventListener('click', () => {
+                let bayEl = product.querySelector('.productName');
+                for (let elProd of products) {
+
+                    if (elProd.name === bayEl.textContent) {
+                        myBasket.addProduct(elProd, 1);
+
+                        // myBasket.makeSumProducts;
+                        break;
+                    }
+                }
+                makeBasket();
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
