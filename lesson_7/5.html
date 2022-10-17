@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <style>
+        .productName {
+            width: 550px;
+
+            float: left;
+            margin-right: 30px;
+            box-shadow: 0 0 4px black;
+        }
+
+        .input {
+            width: 700px;
+            height: 200px;
+            float: left;
+            margin-right: 30px;
+            box-shadow: 0 0 4px black;
+        }
+
+        .basketSum {
+            width: 550px;
+            float: left;
+            margin-right: 30px;
+            box-shadow: 0 0 4px black;
+
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="basketPro">Состав корзины</div>
+    <div class="product" id="listProduct">
+        <div class="productName">
+            <div class="productList">Ручка - Цена: 50 руб - Количество: 10 - Стоимость: 500 руб</div>
+
+            <img src="" alt="">
+            <button>+</button><button>-</button><button>Удалить</button>
+        </div>
+
+        <div class="productName">
+            <div class="productList">Карандаш - Цена: 10 руб - Количество: 5 - Стоимость: 50 руб</div>
+
+            <img src="" alt="">
+            <button>+</button><button>-</button><button>Удалить</button>
+        </div>
+    </div>
+
+    <div class="basketSum">В корзине 2 товара на сумму 550 рублей</div>
+    <div class="address" id="viewAddress" hidden>
+        <input>Адресс доставки
+    </div>
+    <div class="comment" id="viewComment" hidden>
+        <input>Комментарий
+    </div>
+    <div class="console">
+        <button id="back" hidden>Назад</button><button id="go">Далее</button>
+    </div>
+
+    <script>
+        "use strict";
+
+
+        class Product {
+            constructor(name, price) {
+                this.name = name;
+                this.price = price;
+            }
+            make25Discount() {
+                this.price *= 0.75;
+            }
+        };
+
+        class BascketProduct extends Product {
+            basketProducts = [];
+            addProduct(newProduct, num) {
+                let elBool = false;
+                for (let namProd of this.basketProducts) {
+                    if (namProd.name === newProduct.name) {
+                        namProd.quantity += num;
+                        namProd.sum = namProd.quantity * namProd.price;
+                        elBool = true;
+                    }
+                }
+                if (!elBool) {
+                    this.basketProducts.push({
+                        name: newProduct.name,
+                        price: newProduct.price,
+                        quantity: num,
+                        sum: (newProduct.price * num),
+                    });
+                }
+
+            }
+            makeSumProducts() {
+                if (this.basketProducts.length > 0) {
+                    let sumProducts = 0;
+                    for (let el of this.basketProducts) {
+                        sumProducts += el.sum;
+                    }
+                    return `В корзине ${this.basketProducts.length} товаров на сумму ${sumProducts} рублей`;
+                } else {
+                    return 'Корзина пуста';
+                }
+            }
+
+            addOne(nameProd) {
+                for (let el of this.basketProducts) {
+                    if (el.name === nameProd) {
+                        el.quantity++;
+                        el.sum += el.price;
+                        break;
+                    }
+                }
+            }
+            moveOne(nameProd) {
+                for (let el of this.basketProducts) {
+                    if (el.name === nameProd) {
+                        if (el.quantity > 1) {
+                            el.quantity--;
+                            el.sum -= el.price;
+                            break;
+                        }
+                    }
+                }
+            }
+            removeProd(nameProd) {
+                for (let i = 0; i < this.basketProducts.length; i++) {
+                    if (this.basketProducts[i].name === nameProd) {
+                        this.basketProducts.splice(i, 1);
+                        break;
+
+                    }
+                }
+            }
+            makeInfo(nameProd) {
+                for (let el of this.basketProducts) {
+                    if (el.name === nameProd) {
+                        return `${el.name} - Цена: ${el.price} руб - Количество: ${el.quantity} - Стоимость: ${el.sum} руб`
+
+                    }
+                }
+            }
+        };
+
+        let products = [];
+        products[0] = new Product('Карандаш', 10);
+        products[1] = new Product('Ручка', 50);
+        products[2] = new Product('Тетрадь', 100);
+        const myBasket = new BascketProduct();
+        myBasket.addProduct(products[0], 5);
+        myBasket.addProduct(products[1], 10);
+
+        const makeBasket = function () {
+            let prodBasket;
+            if (myBasket.basketProducts.length > 0) {
+                classBasket.innerHTML = 'Корзина с товарами';
+                for (let i = 0; i < myBasket.basketProducts.length; i++) {
+                    prodBasket = document.createElement('li');
+                    prodBasket.innerHTML = `Товар ${myBasket.basketProducts[i].name} 
+                    количество ${myBasket.basketProducts[i].quantity} 
+                    стоимость ${myBasket.basketProducts[i].sum}`;
+
+                    classBasket.appendChild(prodBasket);
+                }
+                prodBasket = document.createElement('div');
+                prodBasket.innerHTML = myBasket.makeSumProducts();
+                classBasket.appendChild(prodBasket);
+            } else {
+                prodBasket = document.createElement('div');
+                prodBasket.innerHTML = myBasket.makeSumProducts();
+                classBasket.appendChild(prodBasket);
+                l
+            }
+        };
+
+        let basketEl = document.querySelector('.product');
+        let sumEl = document.querySelector('.basketSum');
+        basketEl.addEventListener('click', event => {
+            if (event.target.tagName !== "BUTTON") {
+                return;
+            }
+            if (event.target.innerHTML === '+') {
+                const nameInProd = event.target.parentElement.children[0].textContent.split(' ')[0];
+                myBasket.addOne(nameInProd);
+                event.target.parentElement.children[0].textContent = myBasket.makeInfo(nameInProd);
+                sumEl.textContent = myBasket.makeSumProducts();
+            } else if (event.target.innerHTML === '-') {
+                const nameInProd = event.target.parentElement.children[0].textContent.split(' ')[0];
+                myBasket.moveOne(nameInProd);
+                event.target.parentElement.children[0].textContent = myBasket.makeInfo(nameInProd);
+                sumEl.textContent = myBasket.makeSumProducts();
+            } else if (event.target.innerHTML === 'Удалить') {
+                const nameInProd = event.target.parentElement.children[0].textContent.split(' ')[0];
+                myBasket.removeProd(nameInProd);
+                event.target.parentElement.remove();
+                console.log(myBasket);
+                sumEl.textContent = myBasket.makeSumProducts();
+            }
+        });
+
+        let consoleEl = document.querySelector('.console');
+        consoleEl.addEventListener('click', event => {
+            if (event.target.tagName !== "BUTTON") {
+                return;
+            }
+            let addressEl = document.querySelector('.address');
+            let commentEl = document.querySelector('.comment');
+            if (event.target.id === 'go' && !basketEl.hasAttribute('hidden')) {
+                console.log(document.getElementsByClassName('.back').hidden);
+                console.log(document.getElementById('listProduct'));
+                document.getElementById('listProduct').hidden = true;
+                document.getElementById('viewAddress').hidden = false;
+                document.getElementById('back').hidden = false;
+            } else if (event.target.id === 'go' && !addressEl.hasAttribute('hidden')) {
+                document.getElementById('viewAddress').hidden = true;
+                document.getElementById('viewComment').hidden = false;
+                document.getElementById('go').hidden = true;
+            } else if (event.target.id === 'back' && addressEl.hasAttribute('hidden')) {
+                document.getElementById('viewAddress').hidden = false;
+                document.getElementById('viewComment').hidden = true;
+                document.getElementById('go').hidden = false;
+            } else if (event.target.id === 'back' && basketEl.hasAttribute('hidden')) {
+                document.getElementById('viewAddress').hidden = true;
+                document.getElementById('listProduct').hidden = false;
+                document.getElementById('back').hidden = true;
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
