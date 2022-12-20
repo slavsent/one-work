@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+</head>
+
+<body>
+    <div class="basketProd">Корзина с товарами</div>
+    <script>
+        "use strict";
+
+        const productsBasket = [
+            {
+                id: 3,
+                name: 'Ручка',
+                price: 200,
+            },
+            {
+                id: 4,
+                name: 'Тетрадь',
+                price: 400,
+            },
+            {
+                id: 1,
+                name: 'Карандаш',
+                price: 100,
+            },
+        ];
+
+        function countDasketPrice() {
+            let countPrice = 0;
+            for (let val of productsBasket) {
+                countPrice += val.price;
+            }
+            return countPrice;
+        }
+
+        class Product {
+            constructor(name, price) {
+                this.name = name;
+                this.price = price;
+            }
+            make25Discount() {
+                this.price *= 0.75;
+            }
+        }
+
+        class BascketProduct extends Product {
+            basketProducts = [];
+            addProduct(newProduct, num) {
+                this.basketProducts.push({
+                    name: newProduct.name,
+                    price: newProduct.price,
+                    sum: (newProduct.price * num),
+                });
+            }
+            makeSumProducts() {
+                if (this.basketProducts.length > 0) {
+                    let sumProducts = 0;
+                    for (let el of this.basketProducts) {
+                        sumProducts += el.sum;
+                    }
+                    return `В корзине ${this.basketProducts.length} товаров на сумму ${sumProducts} рублей`;
+                } else {
+                    return 'Корзина пуста';
+                }
+            }
+        }
+
+        const product1 = new Product('Карандаш', 10);
+        const product2 = new Product('Ручка', 50);
+        const product3 = new Product('Тетрадь', 100);
+        const myBasket = new BascketProduct();
+        myBasket.addProduct(product1, 5);
+        myBasket.addProduct(product2, 10);
+        console.log(myBasket.basketProducts);
+        console.log(myBasket.makeSumProducts());
+
+        const classBasket = document.querySelector('.basketProd');
+        classBasket.addEventListener('click', () => {
+            let prodBasket;
+            if (myBasket.basketProducts.length > 0) {
+                for (let i = 0; i < myBasket.basketProducts.length; i++) {
+                    prodBasket = document.createElement('div');
+                    prodBasket.innerHTML = `Товар ${myBasket.basketProducts[i].name} 
+                    количество ${myBasket.basketProducts[i].price} 
+                    стоимость ${myBasket.basketProducts[i].sum}`;
+                    classBasket.appendChild(prodBasket);
+                }
+                prodBasket = document.createElement('div');
+                prodBasket.innerHTML = myBasket.makeSumProducts();
+                classBasket.appendChild(prodBasket);
+            } else {
+                prodBasket = document.createElement('div');
+                prodBasket.innerHTML = myBasket.makeSumProducts();
+                classBasket.appendChild(prodBasket);
+                l
+            }
+        })
+
+
+        console.log(countDasketPrice());
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+</head>
+<style>
+    .main-block {
+        height: 630px;
+        width: 630px;
+        margin: 30px auto;
+        border: 1px solid black;
+    }
+
+
+    .block {
+        height: 70px;
+        width: 70px;
+        float: left;
+
+    }
+
+    .black {
+        background-color: black;
+    }
+
+    .white {
+        background-color: white;
+
+    }
+</style>
+
+
+<body>
+    <div class="main-block"></div>
+
+
+    <script>
+        "use strict";
+        function drawChess() {
+
+            let mainBlock = document.querySelector('.main-block');
+            let block;
+
+            let arr = [' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+            //let block;
+            let flag = true;
+            for (let i = 0; i < 9; i++) {
+                if (i === 0) {
+                    for (let a = 0; a < 9; a++) {
+                        block = document.createElement('div');
+                        block.className = 'block white';
+                        block.innerHTML = arr[a];
+                        mainBlock.appendChild(block);
+                    }
+                } else {
+                    for (let j = 0; j < 9; j++) {
+                        if (j === 0) {
+                            block = document.createElement('div');
+                            block.className = 'block white';
+                            block.innerHTML = i;
+                            mainBlock.appendChild(block);
+                        } else {
+                            if (j === 1) {
+                                flag = !flag;
+                            }
+                            block = document.createElement('div');
+                            if (flag) {
+                                block.className = 'block black';
+                            } else {
+                                block.className = 'block white';
+                            }
+                            mainBlock.appendChild(block);
+                            flag = !flag;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        drawChess();
+
+
+    </script>
+</body>
+
+</html>
